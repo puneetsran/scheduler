@@ -10,8 +10,9 @@ export default function useVisualMode(initial) {
   }
 
   function back() {
+    if (!history) setMode(initial);
     setMode(history[history.length - 1]);
-    setHistory([initial]);
+    setHistory([initial].splice(-1, 1));
   }
 
   return { mode, transition, back };
