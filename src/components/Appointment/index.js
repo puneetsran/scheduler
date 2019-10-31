@@ -7,11 +7,14 @@ import Show from './Show.js';
 import Empty from './Empty.js';
 import Form from './Form.js';
 import Saving from './Saving.js';
+import Confirm from './Confirm.js';
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const CONFIRM = "CONFIRM";
+const DELETE = "DELETE";
 
 export default function Appointment(props) {
 
@@ -37,6 +40,18 @@ export default function Appointment(props) {
       .then(() => transition(SHOW));
   }
 
+  function cancelInterview(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    transition(DELETE);
+
+    props
+      .cancelInterview(props.id, interview)
+      .then(() => transition(EMPTY));
+  }
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -49,6 +64,13 @@ export default function Appointment(props) {
         />
       )}
 
+      {mode === CONFIRM && (
+        <Confirm
+          message={'Are you sure you would like to delete?'}
+          onCancel={onCancel}
+          onConfirm={cancelInterview}
+        />)}
+
       {mode === EMPTY && <Empty onAdd={onAdd} />}
 
       {mode === SAVING && <Saving message={"Saving"} />}
@@ -57,6 +79,7 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          on
         />
       )}
     </article>
@@ -64,3 +87,7 @@ export default function Appointment(props) {
   );
 }
 
+
+// message={"Are you sure you want to delete?"}
+// onCancel={onCancel}
+// onConfirm={deleteInterview}
