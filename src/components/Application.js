@@ -41,14 +41,29 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    axios
+    return axios
       .put(`/api/appointments/${id}`, appointment)
       .then(setState({ ...state, appointments }));
   }
 
-  function cancelInterview(id) {
-    axios.delete(`/api/appointments/${id}`);
+  function cancelInterview(id, interview) {
+    return axios.delete(`/api/appointments/${id}`);
   }
+
+  // function cancelInterview(id, interview) {
+  //   const appointment = {
+  //     ...state.appointments[id],
+  //     interview: { ...interview }
+  //   };
+
+  //   const appointments = {
+  //     ...state.appointments,
+  //     [id]: appointment
+  //   };
+  //   return axios
+  //     .delete(`/api/appointments/${id}`)
+  //     .then(setState({ ...state, appointments }));
+  // }
 
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);

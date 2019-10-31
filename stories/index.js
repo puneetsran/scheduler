@@ -12,13 +12,9 @@ import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
-import Deleting from "components/Appointment/Deleting";
-import Saving from "components/Appointment/Saving";
-import ErrorSaving from "components/Appointment/ErrorSaving";
-import ErrorDeleting from "components/Appointment/ErrorDeleting";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
-
-
 
 export const task = {
   id: "1",
@@ -114,9 +110,6 @@ storiesOf("InterviewerListItem", module)
   ));
 
 
-
-
-
 const interviewers = [
   { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
   { id: 2, name: "Tori Malcolm", avatar: "https://i.imgur.com/Nmx0Qxo.png" },
@@ -168,24 +161,24 @@ storiesOf("Appointment", module)
     />
   ))
   .add("Deleting", () => (
-    <Deleting
+    <Status
       message={"Deleting"}
     />
   ))
   .add("Saving", () => (
-    <Saving
+    <Status
       message={"Saving"}
     />
   ))
-  .add("ErrorSaving", () => (
-    <ErrorSaving
+  .add("Error Saving", () => (
+    <Error
       message={"Could not save appointment."}
       onClose={action("onClose")}
     />
   ))
-  .add("ErrorDeleting", () => (
-    <ErrorDeleting
-      message={"Could not delete appointment."}
+  .add("Error Deleting", () => (
+    <Error
+      message={"Could not save appointment."}
       onClose={action("onClose")}
     />
   ))

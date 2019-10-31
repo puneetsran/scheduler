@@ -6,7 +6,7 @@ import Header from './Header.js';
 import Show from './Show.js';
 import Empty from './Empty.js';
 import Form from './Form.js';
-import Saving from './Saving.js';
+import Status from './Status.js';
 import Confirm from './Confirm.js';
 
 const EMPTY = "EMPTY";
@@ -15,6 +15,7 @@ const CREATE = "CREATE";
 const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
 const DELETE = "DELETE";
+const EDIT = "EDIT";
 
 export default function Appointment(props) {
 
@@ -29,12 +30,18 @@ export default function Appointment(props) {
     back();
   }
 
+  function edit() {
+    transition(EDIT);
+  }
+
   function save(name, interviewer) {
     const interview = {
       student: name,
       interviewer
     };
+    // console.log('testing hugjfhjgfjh', interview);
     transition(SAVING);
+
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW));
@@ -52,6 +59,8 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY));
   }
 
+  // if (SHOW) console.log('HERE!!!', props.interview);
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -67,27 +76,31 @@ export default function Appointment(props) {
       {mode === CONFIRM && (
         <Confirm
           message={'Are you sure you would like to delete?'}
-          onCancel={onCancel}
+          onCancel={onCancel} // back
           onConfirm={cancelInterview}
         />)}
 
       {mode === EMPTY && <Empty onAdd={onAdd} />}
 
-      {mode === SAVING && <Saving message={"Saving"} />}
+      {mode === SAVING && <Status message={"Saving"} />}
+
+      {mode === EDIT && (
+        <Form
+          name={props.interview.student}
+          interviewers={props.interviewers}
+          onChangeInterviewer={props.interview.interviewer.id}
+          onSave={save}
+          onCancel={onCancel}
+        />)}
 
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          on
+          onEdit={() => transition(EDIT)}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
     </article>
-
   );
 }
-
-
-// message={"Are you sure you want to delete?"}
-// onCancel={onCancel}
-// onConfirm={deleteInterview}
