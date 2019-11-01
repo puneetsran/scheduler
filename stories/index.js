@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
-import 'index.scss';
+import React, { Fragment } from "react";
+import "index.scss";
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import Task from "../taskbox/src/components/Task";
-import DayListItem from 'components/DayListItem';
-import DayList from 'components/DayList';
-import InterviewerListItem from 'components/InterviewerListItem';
-import InterviewerList from 'components/InterviewerList';
+import DayListItem from "components/DayListItem";
+import DayList from "components/DayList";
+import InterviewerListItem from "components/InterviewerListItem";
+import InterviewerList from "components/InterviewerList";
 import Appointment from "components/Appointment";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
@@ -44,29 +44,31 @@ storiesOf("DayListItem", module)
   .add("Unselected", () => <DayListItem name="Monday" spots={5} />)
   .add("Selected", () => <DayListItem name="Monday" spots={5} selected />)
   .add("Full", () => <DayListItem name="Monday" spots={0} />)
-  .add("Clickable", () => (<DayListItem name="Tuesday" setDay={action("setDay")} spots={5} />));
+  .add("Clickable", () => (
+    <DayListItem name="Tuesday" setDay={action("setDay")} spots={5} />
+  ));
 
 const days = [
   {
     id: 1,
     name: "Monday",
-    spots: 2,
+    spots: 2
   },
   {
     id: 2,
     name: "Tuesday",
-    spots: 5,
+    spots: 5
   },
   {
     id: 3,
     name: "Wednesday",
-    spots: 0,
-  },
+    spots: 0
+  }
 ];
 
 storiesOf("DayList", module)
   .addParameters({
-    backgrounds: [{ name: "dark", value: "#222f3e", default: true }],
+    backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
   })
   .add("Monday", () => (
     <DayList days={days} day={"Monday"} setDay={action("setDay")} />
@@ -109,7 +111,6 @@ storiesOf("InterviewerListItem", module)
     />
   ));
 
-
 const interviewers = [
   { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
   { id: 2, name: "Tori Malcolm", avatar: "https://i.imgur.com/Nmx0Qxo.png" },
@@ -136,7 +137,6 @@ storiesOf("InterviewerList", module)
     />
   ));
 
-
 storiesOf("Appointment", module)
   .addParameters({
     backgrounds: [{ name: "white", value: "#fff", default: true }]
@@ -160,16 +160,8 @@ storiesOf("Appointment", module)
       onCancel={action("onCancel")}
     />
   ))
-  .add("Deleting", () => (
-    <Status
-      message={"Deleting"}
-    />
-  ))
-  .add("Saving", () => (
-    <Status
-      message={"Saving"}
-    />
-  ))
+  .add("Deleting", () => <Status message={"Deleting"} />)
+  .add("Saving", () => <Status message={"Saving"} />)
   .add("Error Saving", () => (
     <Error
       message={"Could not save appointment."}
@@ -184,7 +176,7 @@ storiesOf("Appointment", module)
   ))
   .add("Form Edit", () => (
     <Form
-      name={'some name'}
+      name={"some name"}
       interviewers={interviewers}
       value={3}
       onSave={action("onSave")}

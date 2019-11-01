@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './styles.scss';
+import "./styles.scss";
 import Button from "../Button";
 import InterviewerList from "../InterviewerList";
 
@@ -8,7 +8,7 @@ export default function Form(props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
   function reset() {
-    setName('');
+    setName("");
     setInterviewer(null);
   }
 
@@ -31,19 +31,24 @@ export default function Form(props) {
             type="text"
             placeholder="Enter Student Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
             data-testid="student-name-input"
           />
         </form>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          onChangeInterviewer={setInterviewer} />
+          onChangeInterviewer={setInterviewer}
+        />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button onClick={cancel} danger>Cancel</Button>
-          <Button onClick={save} confirm>Save</Button>
+          <Button onClick={cancel} danger>
+            Cancel
+          </Button>
+          <Button onClick={save} confirm>
+            Save
+          </Button>
         </section>
       </section>
     </main>

@@ -1,9 +1,13 @@
 import React from "react";
-import InterviewerListItem from './InterviewerListItem.js';
-import 'components/InterviewerList.scss';
+import InterviewerListItem from "./InterviewerListItem.js";
+import "components/InterviewerList.scss";
 // import classnames from 'classnames';
 
-export default function InterviewerList({ onChangeInterviewer, value, interviewers }) {
+export default function InterviewerList({
+  onChangeInterviewer,
+  value,
+  interviewers
+}) {
   const interviewerListItems = interviewers.map(interviewer => {
     return (
       <InterviewerListItem
@@ -13,8 +17,8 @@ export default function InterviewerList({ onChangeInterviewer, value, interviewe
         selected={interviewer.id === value} // interviewer.name??
         setInterviewer={event => onChangeInterviewer(interviewer.id)}
       />
-    )
-  })
+    );
+  });
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
