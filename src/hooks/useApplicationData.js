@@ -1,10 +1,6 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-// const SET_DAY = "SET_DAY";
-// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-// const SET_INTERVIEW = "SET_INTERVIEW";
-
 function reducer(state, action) {
   switch (action.type) {
     case "SET_DAY":
@@ -16,7 +12,7 @@ function reducer(state, action) {
     case "SET_INTERVIEW": {
       const appointment = {
         ...state.appointments[action.id],
-        interview: { ...action.interview }
+        interview: action.interview || null
       };
 
       const appointments = {
@@ -24,11 +20,13 @@ function reducer(state, action) {
         [action.id]: appointment
       };
 
+      console.log({ ...state, appointments })
       return { ...state, appointments };
     }
 
     case "SET_SPOTS": {
-      return { ...state, days: action.day };
+      console.log('days here', action);
+      return { ...state, days: action.value }; // does not work for days: action.days
     }
 
     default:
@@ -61,19 +59,39 @@ export default function useApplicationData() {
         interviewers: all[2].data
       });
     });
+    const webSocket = new WebSocket("wss:/http://localhost:8000/");
+
+    webSocket.onopen = function () {
+      webSocket.send("Sending data to the server");
+    };
+
+    webSocket.onmessage = function (event) {
+      const message = JSON.parse(event.data);
+      console.log("ping1");
+      if (message.type === "SET_INTERVIEW") dispatch({ ...message })
+      console.log("ping2");
+    }
+
   }, []);
 
   function spotsRemaining(id, action) {
-    let spotsRemaining = 1;
-    if (action === true) spotsRemaining--;
+    let spotStatus = 1;
+    if (action) spotStatus = -1;
 
-    let found = state.days.map(day => {
-      const day2 = day.appointments.filter(day => day === id);
-      if (day2.length > 0) {
-        return { ...day, spots: day.spots + spotsRemaining }
+    console.log('spots remaining', spotStatus);
+
+    // loop over the days
+    let updatedSpots = state.days.map((day) => {
+
+      // filter the appointments and store in a variable
+      const current = day.appointments.filter(day => day === id);
+
+      if (current.length > 0) {
+        return { ...day, spots: day.spots + spotStatus } // state.spots
       } else return day;
     });
-    dispatch({ type: "SET_SPOTS", value: found })
+    console.log('updated spots', updatedSpots);
+    dispatch({ type: "SET_SPOTS", value: updatedSpots })
   }
 
   function bookInterview(id, interview) {
@@ -81,18 +99,18 @@ export default function useApplicationData() {
       ...state.appointments[id],
       interview: { ...interview }
     };
-    spotsRemaining(id, true);
 
     return axios
       .put(`/api/appointments/${id}`, appointment)
-      .then(dispatch({ type: "SET_INTERVIEW", interview, id }));
+      .then(dispatch({ type: "SET_INTERVIEW", interview, id }))
+      .then(spotsRemaining(id, true));
   }
 
   function cancelInterview(id) {
-    spotsRemaining(id, false);
     return axios
       .delete(`/api/appointments/${id}`)
-      .then(dispatch({ type: "SET_INTERVIEW", id, interview: null }));
+      .then(dispatch({ type: "SET_INTERVIEW", id, interview: null }))
+      .then(spotsRemaining(id, false));
   }
 
   return { state, setDay, bookInterview, cancelInterview };

@@ -1,5 +1,5 @@
 import './styles.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useVisualMode from "../../hooks/useVisualMode";
 
 import Header from './Header.js';
@@ -25,6 +25,12 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
+
+  useEffect(() => {
+    if ((props.interview) && (mode === EMPTY)) transition(SHOW);
+    if ((props.interview === null) && (mode === SHOW)) transition(EMPTY);
+  }, [transition, mode, props.interview]);
+
   function onAdd() {
     transition(CREATE);
   }
@@ -59,9 +65,6 @@ export default function Appointment(props) {
     back();
     back();
   }
-
-  // if (SHOW) console.log('HERE!!!', props.interview);
-  // console.log('here it is', props);
 
   return (
     <article className="appointment">
