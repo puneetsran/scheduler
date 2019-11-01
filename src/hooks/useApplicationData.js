@@ -1,18 +1,19 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
+// const SET_DAY = "SET_DAY";
+// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+// const SET_INTERVIEW = "SET_INTERVIEW";
 
 function reducer(state, action) {
   switch (action.type) {
-    case SET_DAY:
+    case "SET_DAY":
       return { ...state, day: action.day }
-    case SET_APPLICATION_DATA:
-      return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
-    case SET_INTERVIEW: {
 
+    case "SET_APPLICATION_DATA":
+      return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
+
+    case "SET_INTERVIEW": {
       const appointment = {
         ...state.appointments[action.id],
         interview: { ...action.interview }
@@ -25,6 +26,11 @@ function reducer(state, action) {
 
       return { ...state, appointments };
     }
+
+    case "SET_SPOTS": {
+      return { ...state, days: action.day };
+    }
+
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
@@ -57,23 +63,33 @@ export default function useApplicationData() {
     });
   }, []);
 
+  function spotsRemaining(id, action) {
+    let spotsRemaining = 1;
+    if (action === true) spotsRemaining--;
+
+    let found = state.days.map(day => {
+      const day2 = day.appointments.filter(day => day === id);
+      if (day2.length > 0) {
+        return { ...day, spots: day.spots + spotsRemaining }
+      } else return day;
+    });
+    dispatch({ type: "SET_SPOTS", value: found })
+  }
+
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
     };
+    spotsRemaining(id, true);
 
     return axios
       .put(`/api/appointments/${id}`, appointment)
       .then(dispatch({ type: "SET_INTERVIEW", interview, id }));
   }
 
-  // function cancelInterview(id, interview) {
-  //   return axios.delete(`/api/appointments/${id}`);
-  // }
-
   function cancelInterview(id) {
-
+    spotsRemaining(id, false);
     return axios
       .delete(`/api/appointments/${id}`)
       .then(dispatch({ type: "SET_INTERVIEW", id, interview: null }));
@@ -81,4 +97,3 @@ export default function useApplicationData() {
 
   return { state, setDay, bookInterview, cancelInterview };
 }
-

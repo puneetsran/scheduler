@@ -61,7 +61,7 @@ export default function Appointment(props) {
   }
 
   // if (SHOW) console.log('HERE!!!', props.interview);
-  console.log('here it is', props);
+  // console.log('here it is', props);
 
   return (
     <article className="appointment">
