@@ -61,17 +61,17 @@ export default function useApplicationData() {
       });
     });
 
-    const webSocket = new WebSocket("ws://localhost:8001");
+    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
 
     webSocket.onopen = function(event) {
-      webSocket.send("Sending data to the server");
+      webSocket.send("ping");
     };
 
     webSocket.onmessage = function(event) {
       const message = JSON.parse(event.data);
-      console.log("ping1");
+      console.log("ping1", message);
       if (message.type === "SET_INTERVIEW") dispatch({ ...message });
-      console.log("ping2");
+      console.log("ping2", message);
     };
   }, []);
 
@@ -80,9 +80,11 @@ export default function useApplicationData() {
     if (action) spotStatus = -1;
 
     let updatedSpots = state.days.map(day => {
+      console.log("day appts here", day.appointments);
       const current = day.appointments.filter(day => day === id);
-
-      if (current.length > 0) {
+      console.log("current here", current);
+      // current ?
+      if (current) {
         return { ...day, spots: day.spots + spotStatus };
       } else return day;
     });
