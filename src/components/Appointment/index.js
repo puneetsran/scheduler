@@ -65,7 +65,7 @@ export default function Appointment(props) {
   }
 
   return (
-    <article className="appointment">
+    <article data-testid="appointment">
       <Header time={props.time} />
 
       {mode === CREATE && (

@@ -81,5 +81,14 @@ export default {
         data: fixtures.interviewers
       });
     }
+  }),
+
+  put: jest.fn(url => {
+    if (url.includes("/api/appointments")) {
+      return Promise.resolve({
+        status: 204,
+        statusText: "OK"
+      });
+    }
   })
 };
