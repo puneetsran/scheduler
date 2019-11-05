@@ -87,7 +87,7 @@ export default {
     if (url.includes("/api/appointments")) {
       return Promise.resolve({
         status: 204,
-        statusText: "OK"
+        statusText: "No Content"
       });
     }
   }),
@@ -96,7 +96,7 @@ export default {
     if (url.includes("/api/appointments")) {
       return Promise.resolve({
         status: 204,
-        statusText: "OK"
+        statusText: "No Content"
       });
     }
   })

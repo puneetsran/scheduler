@@ -39,6 +39,7 @@ export default function useApplicationData() {
       const message = JSON.parse(event.data);
       console.log("ping1", message);
       if (message.type === "SET_INTERVIEW") dispatch({ ...message });
+      if (message.type === "SET_SPOTS") dispatch({ ...message });
       console.log("ping2", message);
     };
   }, []);
