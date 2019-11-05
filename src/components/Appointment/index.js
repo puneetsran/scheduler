@@ -30,9 +30,9 @@ export default function Appointment(props) {
     if (props.interview === null && mode === SHOW) transition(EMPTY);
   }, [transition, mode, props.interview]);
 
-  function onAdd() {
-    transition(CREATE);
-  }
+  // function onAdd() {
+  //   transition(CREATE);
+  // }
 
   function onCancel() {
     back();
@@ -71,11 +71,10 @@ export default function Appointment(props) {
       {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
-          onCancel={onCancel}
+          onCancel={back} // onCancel
           onSave={save}
         />
       )}
-
       {mode === CONFIRM && (
         <Confirm
           message={"Are you sure you would like to delete?"}
@@ -83,11 +82,8 @@ export default function Appointment(props) {
           onConfirm={cancelInterview}
         />
       )}
-
-      {mode === EMPTY && <Empty onAdd={onAdd} />}
-
+      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message={"Saving"} />}
-
       {mode === DELETE && <Status message={"Deleting"} />}
 
       {mode === ERROR_SAVE && (
@@ -96,7 +92,6 @@ export default function Appointment(props) {
       {mode === ERROR_DELETE && (
         <Error message={"Could not delete appointment"} onClose={onClose} />
       )}
-
       {mode === EDIT && (
         <Form
           name={props.interview.student}
@@ -104,10 +99,9 @@ export default function Appointment(props) {
           interviewers={props.interviewers}
           // onChangeInterviewer={props.interview.interviewer.id}
           onSave={save}
-          onCancel={onCancel}
+          onCancel={back}
         />
       )}
-
       {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
