@@ -49,10 +49,7 @@ export default function useApplicationData() {
     if (action) spotStatus = -1;
 
     let updatedSpots = state.days.map(day => {
-      console.log("day appts here", day.appointments);
       const current = day.appointments.filter(day => day === id);
-      console.log("current here", current);
-      // current ?
       if (current) {
         return { ...day, spots: day.spots + spotStatus };
       } else return day;
