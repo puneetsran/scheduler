@@ -1,10 +1,6 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
-import reducer, {
-  SET_DAY,
-  SET_APPLICATION_DATA,
-  SET_INTERVIEW
-} from "reducers/application";
+import reducer from "reducers/application";
 
 export default function useApplicationData() {
   const [state, dispatch] = useReducer(reducer, {
@@ -37,10 +33,7 @@ export default function useApplicationData() {
 
     webSocket.onmessage = function(event) {
       const message = JSON.parse(event.data);
-      console.log("ping1", message);
       if (message.type === "SET_INTERVIEW") dispatch({ ...message });
-      if (message.type === "SET_SPOTS") dispatch({ ...message });
-      console.log("ping2", message);
     };
   }, []);
 
@@ -50,7 +43,7 @@ export default function useApplicationData() {
 
     let updatedSpots = state.days.map(day => {
       const current = day.appointments.filter(day => day === id);
-      if (current) {
+      if (current.length > 0) {
         return { ...day, spots: day.spots + spotStatus };
       } else return day;
     });
@@ -65,15 +58,15 @@ export default function useApplicationData() {
 
     return axios
       .put(`/api/appointments/${id}`, appointment)
-      .then(dispatch({ type: "SET_INTERVIEW", interview, id }))
-      .then(spotsRemaining(id, true));
+      .then(() => dispatch({ type: "SET_INTERVIEW", id, interview }))
+      .then(() => spotsRemaining(id, true));
   }
 
   function cancelInterview(id) {
     return axios
       .delete(`/api/appointments/${id}`)
-      .then(dispatch({ type: "SET_INTERVIEW", id, interview: null }))
-      .then(spotsRemaining(id, false));
+      .then(() => dispatch({ type: "SET_INTERVIEW", id, interview: null }))
+      .then(() => spotsRemaining(id, false));
   }
 
   return { state, setDay, bookInterview, cancelInterview };

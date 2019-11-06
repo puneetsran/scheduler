@@ -28,7 +28,8 @@ export default function Appointment(props) {
   useEffect(() => {
     if (props.interview && mode === EMPTY) transition(SHOW);
     if (props.interview === null && mode === SHOW) transition(EMPTY);
-  }, [transition, mode, props.interview]);
+    // console.log("spots here", props.spot);
+  }, [transition, mode, props.interview, props.spot, props.days]);
 
   // function onAdd() {
   //   transition(CREATE);
@@ -65,7 +66,7 @@ export default function Appointment(props) {
   }
 
   return (
-    <article data-testid="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
 
       {mode === CREATE && (
