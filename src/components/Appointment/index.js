@@ -25,11 +25,13 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  // side effect to transition to the correct mode when the value of interview changes
   useEffect(() => {
     if (props.interview && mode === EMPTY) transition(SHOW);
     if (props.interview === null && mode === SHOW) transition(EMPTY);
   }, [transition, mode, props.interview, props.spot, props.days]);
 
+  // calls bookInterview and transitions to save
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -43,6 +45,7 @@ export default function Appointment(props) {
       .catch(error => transition(ERROR_SAVE, true));
   }
 
+  // calls cancelInterview and transitions to delete
   function cancelInterview(name, interviewer) {
     transition(DELETE);
     props
