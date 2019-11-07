@@ -28,16 +28,7 @@ export default function Appointment(props) {
   useEffect(() => {
     if (props.interview && mode === EMPTY) transition(SHOW);
     if (props.interview === null && mode === SHOW) transition(EMPTY);
-    // console.log("spots here", props.spot);
   }, [transition, mode, props.interview, props.spot, props.days]);
-
-  // function onAdd() {
-  //   transition(CREATE);
-  // }
-
-  function onCancel() {
-    back();
-  }
 
   function save(name, interviewer) {
     const interview = {
@@ -70,11 +61,7 @@ export default function Appointment(props) {
       <Header time={props.time} />
 
       {mode === CREATE && (
-        <Form
-          interviewers={props.interviewers}
-          onCancel={back} // onCancel
-          onSave={save}
-        />
+        <Form interviewers={props.interviewers} onCancel={back} onSave={save} />
       )}
       {mode === CONFIRM && (
         <Confirm
@@ -98,7 +85,6 @@ export default function Appointment(props) {
           name={props.interview.student}
           interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
-          // onChangeInterviewer={props.interview.interviewer.id}
           onSave={save}
           onCancel={back}
         />

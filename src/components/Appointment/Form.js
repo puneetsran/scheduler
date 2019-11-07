@@ -18,11 +18,6 @@ export default function Form(props) {
     props.onCancel();
   }
 
-  // function save(e) {
-  //   setName(e.target.value);
-  //   props.onSave(name, interviewer);
-  // }
-
   function validate() {
     if (name === "") {
       setError("Student name cannot be blank");

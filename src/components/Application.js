@@ -1,7 +1,6 @@
 import DayList from "components/DayList";
 import "components/Application.scss";
 import React from "react";
-// import axios from "axios";
 import Appointment from "components/Appointment";
 import {
   getAppointmentsForDay,
@@ -25,7 +24,6 @@ export default function Application(props) {
       return (
         <Appointment
           key={appointment.id}
-          // id={appointment.id}
           {...appointment}
           time={appointment.time}
           interview={getInterview(state, appointment.interview)}
