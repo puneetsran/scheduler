@@ -1,5 +1,9 @@
 # Interview Scheduler
 
+### Scheduler is a React application which allows users to book and cancel interviews. Uses an api to populate appointment slots and can be used to reset the database.
+
+# Screenshots
+
 ## Setup
 
 Install dependencies with `npm install`.
