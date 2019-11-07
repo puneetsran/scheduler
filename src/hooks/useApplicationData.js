@@ -25,6 +25,7 @@ export default function useApplicationData() {
       });
     });
 
+    // webSocket which updates interview container (for both adding and deleting)
     const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
 
     webSocket.onopen = function(event) {
@@ -37,6 +38,7 @@ export default function useApplicationData() {
     };
   }, []);
 
+  // updates spots remaining live as interviews are added/ deleted
   function spotsRemaining(id, action) {
     let spotStatus = 1;
     if (action) spotStatus = -1;
